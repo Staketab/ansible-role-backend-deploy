@@ -5,6 +5,25 @@
     state: directory
     mode: 0755
 
+- name: Download New Relic agent
+  ansible.builtin.unarchive:
+    src: "https://download.newrelic.com/newrelic/java-agent/newrelic-agent/{{ deployment_newrelic_version }}/newrelic-java.zip"
+    dest: /tmp
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_group }}"
+    remote_src: true
+  when: deployment_newrelic_enabled
+
+- name: Install New Relic agent
+  ansible.builtin.copy:
+    src: /tmp/newrelic/newrelic.jar
+    dest: "{{ deployment_newrelic_dir }}"
+    owner: "{{ deployment_user }}"
+    group: "{{ deployment_group }}"
+    remote_src: yes
+    mode: 0755
+  when: deployment_newrelic_enabled
+
 - name: Transfer an artifact to the remote server
   ansible.builtin.copy:
     src: "{{ deployment_artifact }}"
