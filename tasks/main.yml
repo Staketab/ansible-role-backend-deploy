@@ -31,6 +31,7 @@
     owner: "{{ deployment_user }}"
     group: "{{ deployment_group }}"
     mode: 0755
+  notify: restart_app
 
 - name: Setup environment variables
   ansible.builtin.template:
