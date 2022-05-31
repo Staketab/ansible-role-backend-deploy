@@ -14,6 +14,12 @@
     remote_src: true
   when: deployment_newrelic_enabled
 
+- name: ensure {{ deployment_newrelic_dir }} exist
+  ansible.builtin.file:
+    path: "{{ deployment_newrelic_dir }}"
+    state: directory
+    mode: 0755
+
 - name: Install New Relic agent
   ansible.builtin.copy:
     src: /tmp/newrelic/newrelic.jar
