@@ -11,10 +11,12 @@ WorkingDirectory={{ deployment_workdir }}
 ExecStart=/usr/bin/java \
     -jar \
     -Dspring.profiles.active={{ deployment_spring_profile }} {{ deployment_workdir }}/app.jar \
-    {% if '${XMS}' is defined and '${XMS}' != "" %}${XMS}{% endif %} \
-    {% if '${XMX}' is defined and '${XMX}' != "" %}${XMX}{% endif %} \
-    {% if '${XX}' is defined and '${XX}' != "" %}${XX}{% endif %} \
-    {% if '${XXASP}' is defined and '${XXASP}' != "" %}${XXASP}{% endif %} \
+    {% if '${XMS}' is defined and '${XMS}' != "" %}
+    ${XMS} \
+    ${XMX} \
+    ${XX} \
+    ${XXASP} \
+    {% endif %}
     {% if deployment_newrelic_enabled %}-javaagent:{{ deployment_newrelic_dir }}/newrelic.jar{% endif %}
 Restart=on-failure
 RestartSec=5
