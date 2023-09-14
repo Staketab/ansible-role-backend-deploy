@@ -14,3 +14,5 @@ deployment_service: backend
 deployment_newrelic_enabled: false
 deployment_newrelic_version: current
 deployment_newrelic_dir: /opt/newrelic
+
+deployment_xx_enabled: false
