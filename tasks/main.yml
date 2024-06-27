@@ -1,11 +1,15 @@
 ---
 - name: Ensure '{{ deployment_workdir }}' exists
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.file:
     path: "{{ deployment_workdir }}"
     state: directory
     mode: 0755
 
 - name: Download New Relic agent
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.unarchive:
     src: "https://download.newrelic.com/newrelic/java-agent/newrelic-agent/{{ deployment_newrelic_version }}/newrelic-java.zip"
     dest: /tmp
@@ -15,12 +19,16 @@
   when: deployment_newrelic_enabled
 
 - name: ensure {{ deployment_newrelic_dir }} exist
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.file:
     path: "{{ deployment_newrelic_dir }}"
     state: directory
     mode: 0755
 
 - name: Install New Relic agent
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.copy:
     src: /tmp/newrelic/newrelic.jar
     dest: "{{ deployment_newrelic_dir }}/newrelic.jar"
@@ -31,6 +39,8 @@
   when: deployment_newrelic_enabled
 
 - name: Transfer an artifact to the remote server
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.copy:
     src: "{{ deployment_artifact }}"
     dest: "{{ deployment_workdir }}/app.jar"
@@ -40,6 +50,8 @@
   notify: restart_app
 
 - name: Setup environment variables
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.template:
     src: env.j2
     dest: "{{ deployment_workdir }}/.env"
@@ -49,6 +61,8 @@
   notify: restart_app
 
 - name: Create systemd service
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.template:
     src: systemd.service.j2
     dest: "/etc/systemd/system/{{ deployment_service }}.service"
@@ -58,6 +72,8 @@
   notify: restart_app
 
 - name: Ensure systemd service is started and enabled
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   ansible.builtin.systemd:
     name: "{{ deployment_service }}"
     state: started
